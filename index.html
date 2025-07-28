@@ -3,102 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zhaksytech Mini CRM</title>
+    <title>Zhaksytech CRM Prototype</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2e7bff; /* Blue */
-            --secondary-color: #1e3a8a; /* Darker Blue */
-            --accent-color: #f59e0b; /* Amber */
-            --bg-light: #f3f4f6;
-            --text-dark: #1f2937;
-            --text-light: #f9fafb;
-            --border-color: #d1d5db;
-            --success-color: #10b981;
-            --error-color: #ef4444;
+            --primary-blue: #2e7bff; /* Main brand blue */
+            --dark-blue: #1a56cc;   /* Darker blue for hover/active */
+            --light-blue: #e0f2fe;  /* Lighter blue for backgrounds */
+            --text-dark: #1f2937;   /* Dark text */
+            --text-light: #f9fafb;  /* Light text */
+            --bg-light: #f3f4f6;    /* Light background */
+            --border-color: #d1d5db;/* Border color */
+            --card-bg: #ffffff;     /* Card background */
+            --success-green: #10b981;
+            --error-red: #ef4444;
+            --warning-orange: #f59e0b;
+
+            /* Kanban stage colors - slightly softer */
+            --stage-new-lead: #dbeafe; /* Blue-100 */
+            --stage-initial-outreach: #fef9c3; /* Yellow-100 */
+            --stage-discovery: #d1fae5; /* Green-100 */
+            --stage-proposal-sent: #e0f2fe; /* Light Blue-100 */
+            --stage-negotiation: #ede9fe; /* Violet-100 */
+            --stage-won: #dcfce7; /* Green-200 */
+            --stage-lost: #fee2e2; /* Red-200 */
+            --stage-project-delivered: #d6eaff; /* Deeper light blue */
         }
 
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll from pipeline overflow */
         }
 
-        .container {
-            background-color: var(--text-light);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 1000px;
-            box-sizing: border-box;
-            margin-bottom: 30px;
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            background-color: var(--dark-blue);
+            color: var(--text-light);
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0; /* Prevent shrinking */
         }
 
-        h1 {
+        .sidebar-logo {
             text-align: center;
-            color: var(--secondary-color);
-            margin-bottom: 25px;
+            padding: 10px 0 30px 0;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu ul li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: background-color 0.2s ease, padding-left 0.2s ease;
+            border-left: 5px solid transparent;
+        }
+
+        .sidebar-menu ul li a i {
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+
+        .sidebar-menu ul li a:hover,
+        .sidebar-menu ul li a.active {
+            background-color: var(--primary-blue);
+            border-left-color: var(--light-blue);
+            padding-left: 25px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: var(--bg-light);
+            overflow-y: auto; /* Enable scrolling for main content */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            margin: 0;
+            color: var(--dark-blue);
             font-size: 2.5em;
             font-weight: 700;
         }
 
-        h2 {
-            color: var(--primary-color);
-            margin-top: 30px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            font-weight: 600;
-        }
-
-        .form-section, .list-section {
-            margin-bottom: 25px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 10px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: calc(100% - 20px);
-            padding: 12px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1em;
-            color: var(--text-dark);
-            background-color: #fff;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        button {
-            background-color: var(--primary-color);
+        .btn-primary {
+            background-color: var(--primary-blue);
             color: var(--text-light);
             padding: 12px 25px;
             border: none;
@@ -113,132 +140,360 @@
             gap: 8px;
         }
 
-        button:hover {
-            background-color: var(--secondary-color);
+        .btn-primary:hover {
+            background-color: var(--dark-blue);
             transform: translateY(-2px);
         }
 
-        button:active {
-            transform: translateY(0);
+        /* Form Styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 600px;
+            animation: fadeIn 0.3s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-button {
+            color: var(--text-dark);
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--error-red);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: calc(100% - 24px); /* Account for padding */
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            color: var(--text-dark);
+            background-color: #fff;
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
         }
 
         .button-group {
             display: flex;
             gap: 15px;
-            justify-content: flex-end; /* Align buttons to the right */
+            justify-content: flex-end;
             margin-top: 20px;
         }
 
-        .clear-data-btn {
-            background-color: var(--error-color);
+        .btn-secondary {
+            background-color: #6b7280; /* Gray */
+            color: var(--text-light);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
         }
 
-        .clear-data-btn:hover {
+        .btn-danger {
+            background-color: var(--error-red);
+        }
+        .btn-danger:hover {
             background-color: #dc2626;
         }
 
         .warning-message {
-            background-color: #fef2f2; /* Red-100 */
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
+            background-color: #fef2f2;
+            color: var(--error-red);
+            border: 1px solid var(--error-red);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
             font-weight: 500;
             font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .warning-message i {
+            font-size: 1.3em;
         }
 
-        .table-container {
-            overflow-x: auto;
+        /* Kanban Board Styling */
+        .kanban-board {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling for columns */
+            gap: 20px;
+            padding-bottom: 20px; /* Space for scrollbar */
+            flex-grow: 1; /* Allow board to take available height */
         }
 
-        .crm-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .kanban-column {
+            background-color: var(--light-blue);
+            border-radius: 12px;
+            min-width: 280px; /* Minimum width for each column */
+            flex-shrink: 0; /* Prevent columns from shrinking too much */
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 120px); /* Adjust based on header height */
         }
 
-        .crm-table th, .crm-table td {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
-            text-align: left;
-        }
-
-        .crm-table th {
-            background-color: var(--primary-color);
-            color: var(--text-light);
+        .column-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             font-weight: 600;
-            text-transform: uppercase;
+            font-size: 1.1em;
+            color: var(--dark-blue);
+            background-color: var(--primary-blue);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            color: var(--text-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .column-header .count {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 5px;
             font-size: 0.9em;
+            font-weight: 700;
         }
 
-        .crm-table tbody tr:nth-child(even) {
-            background-color: #f9fafb;
+        .column-cards {
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto; /* Scroll individual columns */
+            min-height: 50px; /* Ensure columns have some height */
         }
 
-        .crm-table tbody tr:hover {
-            background-color: #eff6ff; /* Blue-50 */
+        .kanban-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            cursor: grab;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            border-top: 5px solid; /* For stage color indicator */
         }
 
-        .crm-table .actions button {
-            padding: 8px 12px;
+        /* Card border colors based on stage */
+        .kanban-card[data-stage="New Lead"] { border-top-color: var(--stage-new-lead); }
+        .kanban-card[data-stage="Initial Outreach"] { border-top-color: var(--stage-initial-outreach); }
+        .kanban-card[data-stage="Discovery/Qualifying"] { border-top-color: var(--stage-discovery); }
+        .kanban-card[data-stage="Proposal Sent"] { border-top-color: var(--stage-proposal-sent); }
+        .kanban-card[data-stage="Negotiation/Follow-up"] { border-top-color: var(--stage-negotiation); }
+        .kanban-card[data-stage="Won"] { border-top-color: var(--success-green); }
+        .kanban-card[data-stage="Lost"] { border-top-color: var(--error-red); }
+        .kanban-card[data-stage="Project Delivered"] { border-top-color: var(--stage-project-delivered); }
+
+
+        .kanban-card:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .kanban-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary-blue);
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .kanban-card p {
+            margin: 5px 0;
             font-size: 0.9em;
-            margin-right: 8px;
+            color: #555;
         }
 
-        .edit-btn {
-            background-color: var(--accent-color);
+        .kanban-card .contact-info {
+            font-weight: 500;
+            color: var(--dark-blue);
+        }
+        .kanban-card .card-notes {
+            font-style: italic;
+            font-size: 0.85em;
+            color: #777;
         }
 
-        .edit-btn:hover {
+        .kanban-card .card-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .kanban-card .card-actions button {
+            padding: 6px 10px;
+            font-size: 0.85em;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .kanban-card .card-actions .edit-btn {
+            background-color: var(--warning-orange);
+            color: var(--text-light);
+        }
+        .kanban-card .card-actions .edit-btn:hover {
             background-color: #d97706;
         }
 
-        .delete-btn {
-            background-color: var(--error-color);
+        .kanban-card .card-actions .delete-btn {
+            background-color: var(--error-red);
+            color: var(--text-light);
         }
-
-        .delete-btn:hover {
+        .kanban-card .card-actions .delete-btn:hover {
             background-color: #dc2626;
         }
 
-        .stage-filter-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
+        /* Drag & Drop Styles */
+        .kanban-column.drag-over {
+            box-shadow: 0 0 0 4px var(--primary-blue) inset;
+            background-color: rgba(46, 123, 255, 0.1); /* Lighter hover state */
         }
-
-        .stage-filter-group button {
-            background-color: #e0e7ff; /* Lighter blue */
-            color: var(--secondary-color);
-            border: 1px solid var(--primary-color);
-            padding: 8px 15px;
-            font-size: 0.95em;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .stage-filter-group button:hover {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-        }
-
-        .stage-filter-group button.active {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            border-color: var(--primary-color);
-            font-weight: 600;
+        .kanban-card.dragging {
+            opacity: 0.4;
         }
 
         footer {
-            margin-top: 40px;
+            margin-top: auto; /* Push footer to bottom */
+            padding: 20px;
             text-align: center;
             font-size: 0.85em;
             color: #6b7280;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            flex-shrink: 0;
+        }
+        footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
         }
 
-        @media (max-width: 768px) {
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 15px 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                border-bottom: none;
+            }
+            .sidebar-logo {
+                padding-bottom: 15px;
+                border-bottom: none;
+            }
+            .sidebar-menu ul {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .sidebar-menu ul li a {
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                padding: 8px 15px;
+            }
+            .sidebar-menu ul li a:hover,
+            .sidebar-menu ul li a.active {
+                border-bottom-color: var(--light-blue);
+                border-left: none;
+                padding-left: 15px; /* Reset padding */
+            }
+            .sidebar-menu ul li a i {
+                display: none; /* Hide icons on small screens for cleaner navigation */
+            }
+
+            .main-content {
+                padding: 20px;
+                flex-grow: 1; /* Allow main content to expand */
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .btn-primary {
+                width: 100%;
+            }
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -246,110 +501,144 @@
                 flex-direction: column;
                 gap: 10px;
             }
-            button {
-                width: 100%;
-            }
-            .stage-filter-group {
+            .kanban-board {
+                flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
                 justify-content: center;
+            }
+            .kanban-column {
+                min-width: 90%; /* Take up more width when wrapped */
+            }
+            .modal-content {
+                width: 95%;
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 Zhaksytech Mini CRM</h1>
+    <aside class="sidebar">
+        <div class="sidebar-logo">Zhaksytech CRM</div>
+        <nav class="sidebar-menu">
+            <ul>
+                <li><a href="#" class="active" id="navPipeline"><i class="fas fa-chart-line"></i> Pipeline</a></li>
+                <li><a href="#" id="navAddClient"><i class="fas fa-plus-circle"></i> Add Client</a></li>
+                <li><a href="#" id="navAbout"><i class="fas fa-info-circle"></i> About</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1><span id="currentViewTitle">Pipeline Overview</span></h1>
+            <button class="btn-primary" id="addClientBtn"><i class="fas fa-plus"></i> Add New Client</button>
+        </header>
+
         <p class="warning-message">
+            <i class="fas fa-exclamation-triangle"></i>
             <strong>Important:</strong> This is a client-side prototype. All data is stored only in your browser's local storage. It is NOT shared with anyone else and will be lost if your browser's local storage is cleared. This is not a substitute for a full, secure CRM system.
         </p>
 
-        <div class="form-section">
-            <h2>Add New Client/Lead</h2>
-            <form id="clientForm">
-                <input type="hidden" id="clientId">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="name">Client Name:</label>
-                        <input type="text" id="name" required placeholder="e.g., Almas Saparov">
-                    </div>
-                    <div class="form-group">
-                        <label for="company">Company:</label>
-                        <input type="text" id="company" placeholder="e.g., Astana Innovations">
-                    </div>
-                    <div class="form-group">
-                        <label for="contactInfo">Contact Info:</label>
-                        <input type="text" id="contactInfo" required placeholder="e.g., @almas_tech (Telegram), +77771234567">
-                    </div>
-                    <div class="form-group">
-                        <label for="stage">Pipeline Stage:</label>
-                        <select id="stage" required>
-                            <option value="New Lead">1. New Lead</option>
-                            <option value="Initial Outreach">2. Initial Outreach</option>
-                            <option value="Discovery/Qualifying">3. Discovery/Qualifying</option>
-                            <option value="Proposal Sent">4. Proposal Sent</option>
-                            <option value="Negotiation/Follow-up">5. Negotiation/Follow-up</option>
-                            <option value="Won">6. Won (Project Started)</option>
-                            <option value="Lost">7. Lost (Reason: ...)</option>
-                            <option value="Project Delivered">8. Project Delivered</option>
-                        </select>
-                    </div>
+        <section id="pipelineView" class="view-section">
+            <div class="kanban-board" id="kanbanBoard">
                 </div>
-                <div class="form-group">
-                    <label for="notes">Notes:</label>
-                    <textarea id="notes" placeholder="Any specific details, requirements, or next steps."></textarea>
-                </div>
-                <div class="button-group">
-                    <button type="submit" id="submitBtn">➕ Add Client</button>
-                    <button type="button" id="clearFormBtn" style="background-color: #6b7280;">Clear Form</button>
-                </div>
-            </form>
-        </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button type="button" class="btn-danger" id="clearAllDataBtn"><i class="fas fa-trash-alt"></i> Clear All CRM Data</button>
+            </div>
+        </section>
 
-        <div class="list-section">
-            <h2>Your Clients & Leads</h2>
-            <div class="stage-filter-group" id="stageFilters">
-                <button class="active" data-stage="All">All Stages</button>
-                <button data-stage="New Lead">New Leads</button>
-                <button data-stage="Initial Outreach">Outreach</button>
-                <button data-stage="Discovery/Qualifying">Discovery</button>
-                <button data-stage="Proposal Sent">Proposal Sent</button>
-                <button data-stage="Negotiation/Follow-up">Negotiation</button>
-                <button data-stage="Won">Won</button>
-                <button data-stage="Lost">Lost</button>
-                <button data-stage="Project Delivered">Delivered</button>
-            </div>
-            <div class="table-container">
-                <table class="crm-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Company</th>
-                            <th>Contact Info</th>
-                            <th>Stage</th>
-                            <th>Notes</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="clientList">
-                        </tbody>
-                </table>
-            </div>
-            <div class="button-group" style="justify-content: flex-start; margin-top: 30px;">
-                <button type="button" class="clear-data-btn" id="clearAllDataBtn">⚠️ Clear All Data</button>
+        <section id="aboutView" class="view-section" style="display: none;">
+            <h2>About Zhaksytech CRM Prototype</h2>
+            <p>This is a simplified, client-side web application designed to demonstrate a basic CRM functionality with a modern, visual interface, inspired by professional CRM systems like AmoCRM.</p>
+            <h3>Features:</h3>
+            <ul>
+                <li>Add, Edit, and Delete Client/Lead records.</li>
+                <li>Visual pipeline (Kanban board) to track client stages.</li>
+                <li>Drag-and-drop functionality for moving clients between stages.</li>
+                <li>Data persistence using browser's LocalStorage (local to your browser only).</li>
+            </ul>
+            <h3>Limitations:</h3>
+            <ul>
+                <li><strong>No Multi-User Support:</strong> Data is not shared across devices or users.</li>
+                <li><strong>No Backend:</strong> No server-side database, integrations (email, Telegram), or complex automation.</li>
+                <li><strong>Data Loss Risk:</strong> Clearing browser data will permanently delete all stored CRM information.</li>
+                <li>This is a *prototype* for internal testing of UI/UX and process flow, not a production-ready CRM.</li>
+            </ul>
+            <p>For a full-fledged CRM with team collaboration, data security, and advanced features, a custom backend development or an off-the-shelf CRM solution (like HubSpot, Zoho CRM, or AmoCRM itself) is required.</p>
+            <p>Developed by your AI assistant for Zhaksytech. Current time in Taraz, Kazakhstan: <span id="currentTime"></span></p>
+        </section>
+
+        <div id="clientModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2><span id="modalTitle">Add New Client</span></h2>
+                <form id="clientForm">
+                    <input type="hidden" id="clientId">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Client Name:</label>
+                            <input type="text" id="name" required placeholder="e.g., Almas Saparov">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company:</label>
+                            <input type="text" id="company" placeholder="e.g., Astana Innovations">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactInfo">Contact Info:</label>
+                            <input type="text" id="contactInfo" required placeholder="e.g., @almas_tech (Telegram), +77771234567">
+                        </div>
+                        <div class="form-group">
+                            <label for="stage">Pipeline Stage:</label>
+                            <select id="stage" required>
+                                <option value="New Lead">1. New Lead</option>
+                                <option value="Initial Outreach">2. Initial Outreach</option>
+                                <option value="Discovery/Qualifying">3. Discovery/Qualifying</option>
+                                <option value="Proposal Sent">4. Proposal Sent</option>
+                                <option value="Negotiation/Follow-up">5. Negotiation/Follow-up</option>
+                                <option value="Won">6. Won (Project Started)</option>
+                                <option value="Lost">7. Lost (Reason: ...)</option>
+                                <option value="Project Delivered">8. Project Delivered</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes:</label>
+                        <textarea id="notes" placeholder="Any specific details, requirements, or next steps."></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary" id="submitBtn">➕ Add Client</button>
+                        <button type="button" class="btn-secondary" id="cancelFormBtn">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
+    </main>
 
     <footer>
-        <p>&copy; 2025 Zhaksytech. Mini CRM Prototype.</p>
-        <p>Built with HTML, CSS, and JavaScript. Data is stored locally in your browser.</p>
+        <p>&copy; 2025 Zhaksytech. CRM Prototype. All rights reserved.</p>
+        <p>For professional CRM solutions, consider services like <a href="https://www.amocrm.com/" target="_blank">AmoCRM</a>, <a href="https://www.hubspot.com/" target="_blank">HubSpot CRM</a>, or <a href="https://www.zoho.com/crm/" target="_blank">Zoho CRM</a>.</p>
     </footer>
 
     <script>
         const CLIENTS_STORAGE_KEY = 'zhaksytech_crm_clients';
         let clients = [];
         let editingClientId = null;
-        let currentFilterStage = 'All';
 
+        const pipelineStages = [
+            "New Lead",
+            "Initial Outreach",
+            "Discovery/Qualifying",
+            "Proposal Sent",
+            "Negotiation/Follow-up",
+            "Won",
+            "Lost",
+            "Project Delivered"
+        ];
+
+        // DOM Elements
+        const kanbanBoard = document.getElementById('kanbanBoard');
+        const addClientBtn = document.getElementById('addClientBtn');
+        const clientModal = document.getElementById('clientModal');
+        const closeButton = document.querySelector('.close-button');
         const clientForm = document.getElementById('clientForm');
         const clientIdInput = document.getElementById('clientId');
         const nameInput = document.getElementById('name');
@@ -358,16 +647,22 @@
         const stageSelect = document.getElementById('stage');
         const notesInput = document.getElementById('notes');
         const submitBtn = document.getElementById('submitBtn');
-        const clearFormBtn = document.getElementById('clearFormBtn');
-        const clientListBody = document.getElementById('clientList');
+        const cancelFormBtn = document.getElementById('cancelFormBtn');
+        const modalTitle = document.getElementById('modalTitle');
         const clearAllDataBtn = document.getElementById('clearAllDataBtn');
-        const stageFilters = document.getElementById('stageFilters');
+        const currentViewTitle = document.getElementById('currentViewTitle');
+        const pipelineView = document.getElementById('pipelineView');
+        const aboutView = document.getElementById('aboutView');
+        const navPipeline = document.getElementById('navPipeline');
+        const navAddClient = document.getElementById('navAddClient');
+        const navAbout = document.getElementById('navAbout');
+        const currentTimeSpan = document.getElementById('currentTime');
 
         // --- Data Handling ---
         function loadClients() {
             const storedClients = localStorage.getItem(CLIENTS_STORAGE_KEY);
             clients = storedClients ? JSON.parse(storedClients) : [];
-            renderClients();
+            renderKanbanBoard();
         }
 
         function saveClients() {
@@ -375,33 +670,74 @@
         }
 
         // --- UI Rendering ---
-        function renderClients() {
-            clientListBody.innerHTML = ''; // Clear current list
-            const filteredClients = clients.filter(client => 
-                currentFilterStage === 'All' || client.stage === currentFilterStage
-            );
+        function renderKanbanBoard() {
+            kanbanBoard.innerHTML = ''; // Clear existing board
+            
+            pipelineStages.forEach(stage => {
+                const column = document.createElement('div');
+                column.classList.add('kanban-column');
+                column.dataset.stage = stage;
 
-            if (filteredClients.length === 0) {
-                clientListBody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px;">No clients found in this stage.</td></tr>`;
-                return;
-            }
+                // Set up drag and drop listeners for columns
+                column.addEventListener('dragover', dragOver);
+                column.addEventListener('dragleave', dragLeave);
+                column.addEventListener('drop', drop);
 
-            filteredClients.forEach(client => {
-                const row = clientListBody.insertRow();
-                row.dataset.id = client.id; // Store ID on the row for easy access
-
-                row.innerHTML = `
-                    <td>${client.name}</td>
-                    <td>${client.company}</td>
-                    <td>${client.contactInfo}</td>
-                    <td>${client.stage}</td>
-                    <td>${client.notes.length > 50 ? client.notes.substring(0, 50) + '...' : client.notes}</td>
-                    <td class="actions">
-                        <button class="edit-btn" onclick="editClient('${client.id}')">Edit</button>
-                        <button class="delete-btn" onclick="deleteClient('${client.id}')">Delete</button>
-                    </td>
+                const header = document.createElement('div');
+                header.classList.add('column-header');
+                const clientsInStage = clients.filter(c => c.stage === stage);
+                header.innerHTML = `
+                    <span>${stage}</span>
+                    <span class="count">${clientsInStage.length}</span>
                 `;
+                column.appendChild(header);
+
+                const cardsContainer = document.createElement('div');
+                cardsContainer.classList.add('column-cards');
+                cardsContainer.id = `column-${stage.replace(/[^a-zA-Z0-9]/g, '')}`; // Clean ID for direct access
+
+                clientsInStage.forEach(client => {
+                    cardsContainer.appendChild(createClientCard(client));
+                });
+                column.appendChild(cardsContainer);
+                kanbanBoard.appendChild(column);
             });
+        }
+
+        function createClientCard(client) {
+            const card = document.createElement('div');
+            card.classList.add('kanban-card');
+            card.setAttribute('draggable', true);
+            card.dataset.id = client.id;
+            card.dataset.stage = client.stage; // Set data-stage for CSS styling
+
+            card.innerHTML = `
+                <h3>${client.name}</h3>
+                <p><strong>Company:</strong> ${client.company}</p>
+                <p class="contact-info"><strong>Contact:</strong> ${client.contactInfo}</p>
+                ${client.notes ? `<p class="card-notes"><em>${client.notes.length > 80 ? client.notes.substring(0, 80) + '...' : client.notes}</em></p>` : ''}
+                <div class="card-actions">
+                    <button class="edit-btn" onclick="openClientModal('${client.id}')"><i class="fas fa-edit"></i> Edit</button>
+                    <button class="delete-btn" onclick="deleteClient('${client.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
+                </div>
+            `;
+
+            // Set up drag and drop listeners for cards
+            card.addEventListener('dragstart', dragStart);
+            card.addEventListener('dragend', dragEnd);
+
+            return card;
+        }
+
+        function showModal(title, isEditing = false) {
+            modalTitle.textContent = title;
+            submitBtn.textContent = isEditing ? '💾 Update Client' : '➕ Add Client';
+            clientModal.style.display = 'flex';
+        }
+
+        function hideModal() {
+            clientModal.style.display = 'none';
+            clearForm(); // Clear form on close
         }
 
         function clearForm() {
@@ -411,16 +747,50 @@
             contactInfoInput.value = '';
             stageSelect.value = 'New Lead';
             notesInput.value = '';
-            submitBtn.textContent = '➕ Add Client';
             editingClientId = null;
         }
 
-        // --- Event Handlers ---
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(viewId).style.display = 'block';
+
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            if (viewId === 'pipelineView') {
+                navPipeline.classList.add('active');
+                currentViewTitle.textContent = 'Pipeline Overview';
+            } else if (viewId === 'aboutView') {
+                navAbout.classList.add('active');
+                currentViewTitle.textContent = 'About This Prototype';
+            }
+            // Add other view conditions if necessary
+        }
+
+        // --- Event Listeners ---
+        addClientBtn.addEventListener('click', () => {
+            clearForm();
+            showModal('Add New Client');
+        });
+
+        closeButton.addEventListener('click', hideModal);
+        cancelFormBtn.addEventListener('click', hideModal);
+
+        // Close modal if clicked outside
+        window.addEventListener('click', (event) => {
+            if (event.target === clientModal) {
+                hideModal();
+            }
+        });
+
         clientForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
             const clientData = {
-                id: clientIdInput.value || crypto.randomUUID(), // Generate new ID if not editing
+                id: clientIdInput.value || crypto.randomUUID(),
                 name: nameInput.value.trim(),
                 company: companyInput.value.trim(),
                 contactInfo: contactInfoInput.value.trim(),
@@ -429,46 +799,49 @@
             };
 
             if (editingClientId) {
-                // Update existing client
                 const index = clients.findIndex(c => c.id === editingClientId);
                 if (index !== -1) {
                     clients[index] = clientData;
                 }
             } else {
-                // Add new client
                 clients.push(clientData);
             }
 
             saveClients();
-            clearForm();
-            renderClients();
+            hideModal();
+            renderKanbanBoard();
         });
-
-        clearFormBtn.addEventListener('click', clearForm);
 
         clearAllDataBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to clear ALL client data? This action cannot be undone!')) {
+            if (confirm('Are you absolutely sure you want to clear ALL client data? This action cannot be undone!')) {
                 clients = [];
                 saveClients();
-                renderClients();
+                renderKanbanBoard();
                 clearForm();
+                alert('All data cleared!');
             }
         });
 
-        stageFilters.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
-                // Remove active class from all buttons
-                stageFilters.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-                // Add active class to the clicked button
-                e.target.classList.add('active');
-                
-                currentFilterStage = e.target.dataset.stage;
-                renderClients();
-            }
+        // Navigation
+        navPipeline.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('pipelineView');
+            renderKanbanBoard(); // Re-render to ensure fresh state
         });
 
-        // --- CRUD Operations ---
-        function editClient(id) {
+        navAddClient.addEventListener('click', (e) => {
+            e.preventDefault();
+            addClientBtn.click(); // Simulate click on add button to open modal
+        });
+        
+        navAbout.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('aboutView');
+            updateCurrentTime();
+        });
+
+        // --- CRUD Operations from Cards ---
+        function openClientModal(id) {
             const client = clients.find(c => c.id === id);
             if (client) {
                 clientIdInput.value = client.id;
@@ -477,11 +850,8 @@
                 contactInfoInput.value = client.contactInfo;
                 stageSelect.value = client.stage;
                 notesInput.value = client.notes;
-
-                submitBtn.textContent = '💾 Update Client';
                 editingClientId = client.id;
-                // Scroll to form for easier editing on mobile
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                showModal('Edit Client', true);
             }
         }
 
@@ -489,16 +859,69 @@
             if (confirm('Are you sure you want to delete this client?')) {
                 clients = clients.filter(client => client.id !== id);
                 saveClients();
-                renderClients();
-                // If the deleted client was being edited, clear the form
+                renderKanbanBoard();
                 if (editingClientId === id) {
                     clearForm();
                 }
             }
         }
 
+        // --- Drag and Drop Logic ---
+        let draggedCard = null;
+
+        function dragStart(e) {
+            draggedCard = this;
+            setTimeout(() => this.classList.add('dragging'), 0); // Add class after a tiny delay
+            e.dataTransfer.setData('text/plain', this.dataset.id); // Set data to be transferred
+        }
+
+        function dragEnd() {
+            this.classList.remove('dragging');
+            draggedCard = null;
+        }
+
+        function dragOver(e) {
+            e.preventDefault(); // Allow drop
+            if (this.classList.contains('kanban-column')) { // Only highlight columns
+                this.classList.add('drag-over');
+            }
+        }
+
+        function dragLeave() {
+            if (this.classList.contains('kanban-column')) {
+                this.classList.remove('drag-over');
+            }
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over'); // Remove highlight
+
+            const droppedClientId = e.dataTransfer.getData('text/plain');
+            const newStage = this.dataset.stage; // Get the stage of the column we dropped into
+
+            const clientIndex = clients.findIndex(c => c.id === droppedClientId);
+            if (clientIndex !== -1 && clients[clientIndex].stage !== newStage) {
+                clients[clientIndex].stage = newStage;
+                saveClients();
+                renderKanbanBoard(); // Re-render the entire board to update counts and card positions
+            }
+        }
+
+        // Function to update current time in about section
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
+            currentTimeSpan.textContent = now.toLocaleString('en-US', { ...options, timeZone: 'Asia/Almaty' });
+        }
+
+
         // --- Initial Load ---
-        document.addEventListener('DOMContentLoaded', loadClients);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadClients();
+            showView('pipelineView'); // Show pipeline by default
+            updateCurrentTime();
+        });
     </script>
 </body>
 </html>
