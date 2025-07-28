@@ -40,7 +40,7 @@
             line-height: 1.6;
             display: flex;
             min-height: 100vh;
-            overflow-x: hidden; /* Prevent horizontal scroll from pipeline overflow */
+            /* FIX: Removed overflow-x: hidden; */
         }
 
         /* Sidebar Styling */
@@ -103,9 +103,11 @@
             flex-grow: 1;
             padding: 30px;
             background-color: var(--bg-light);
-            overflow-y: auto; /* Enable scrolling for main content */
+            overflow-y: auto; /* Enable vertical scrolling for main content */
             display: flex;
             flex-direction: column;
+            /* FIX: Allow main-content to shrink if needed by its children */
+            min-width: 0; 
         }
 
         .header {
@@ -291,6 +293,7 @@
             gap: 20px;
             padding-bottom: 20px; /* Space for scrollbar */
             flex-grow: 1; /* Allow board to take available height */
+            min-height: 200px; /* FIX: Give it a minimum height to be visible */
         }
 
         .kanban-column {
@@ -482,6 +485,8 @@
             .main-content {
                 padding: 20px;
                 flex-grow: 1; /* Allow main content to expand */
+                /* FIX: Important for horizontal scroll on mobile */
+                min-width: 0;
             }
             .header {
                 flex-direction: column;
@@ -502,11 +507,14 @@
                 gap: 10px;
             }
             .kanban-board {
-                flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
-                justify-content: center;
+                /* FIX: Prevent columns from wrapping on smaller screens to maintain horizontal scroll */
+                flex-wrap: nowrap;
+                justify-content: flex-start; /* Ensure columns start from the left */
             }
             .kanban-column {
-                min-width: 90%; /* Take up more width when wrapped */
+                min-width: 280px; /* Keep minimum width */
+                width: auto; /* Let content determine width, or min-width for columns */
+                max-height: calc(100vh - 180px); /* Adjusted for mobile header/footer */
             }
             .modal-content {
                 width: 95%;
