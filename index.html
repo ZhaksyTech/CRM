@@ -31,6 +31,7 @@
             --stage-project-delivered: #d6eaff; /* Deeper light blue */
         }
 
+        /* --- Global / Base Styles --- */
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -38,12 +39,12 @@
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
-            display: flex;
-            min-height: 100vh;
-            /* FIX: Removed overflow-x: hidden; */
+            display: flex; /* Make body a flex container */
+            min-height: 100vh; /* Ensure it takes at least the full viewport height */
+            width: 100%; /* Ensure it spans the full width of the viewport */
         }
 
-        /* Sidebar Styling */
+        /* --- Sidebar Styling --- */
         .sidebar {
             width: 250px;
             background-color: var(--dark-blue);
@@ -52,7 +53,7 @@
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0; /* Prevent shrinking below its width */
         }
 
         .sidebar-logo {
@@ -98,16 +99,17 @@
             padding-left: 25px;
         }
 
-        /* Main Content Area */
+        /* --- Main Content Area - Crucial for Layout Fix --- */
         .main-content {
-            flex-grow: 1;
+            flex-grow: 1; /* Allows it to take up all available horizontal space */
+            flex-shrink: 1; /* Allows it to shrink if content needs more space than min-width */
+            flex-basis: auto; /* Its initial size is based on its content */
             padding: 30px;
             background-color: var(--bg-light);
-            overflow-y: auto; /* Enable vertical scrolling for main content */
+            overflow-y: auto; /* Enables vertical scrolling for main content */
             display: flex;
             flex-direction: column;
-            /* FIX: Allow main-content to shrink if needed by its children */
-            min-width: 0; 
+            min-width: 0; /* CRITICAL: Allows flex item to shrink below its content's intrinsic width */
         }
 
         .header {
@@ -147,7 +149,7 @@
             transform: translateY(-2px);
         }
 
-        /* Form Styling */
+        /* --- Modal (Form) Styling --- */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -286,14 +288,15 @@
             font-size: 1.3em;
         }
 
-        /* Kanban Board Styling */
+        /* --- Kanban Board Styling --- */
         .kanban-board {
             display: flex;
             overflow-x: auto; /* Enable horizontal scrolling for columns */
             gap: 20px;
             padding-bottom: 20px; /* Space for scrollbar */
             flex-grow: 1; /* Allow board to take available height */
-            min-height: 200px; /* FIX: Give it a minimum height to be visible */
+            min-height: 200px; /* Ensures a minimum visible height for the board */
+            width: 100%; /* Ensure it tries to take 100% of its parent's width */
         }
 
         .kanban-column {
@@ -418,7 +421,7 @@
             background-color: #dc2626;
         }
 
-        /* Drag & Drop Styles */
+        /* --- Drag & Drop Styles --- */
         .kanban-column.drag-over {
             box-shadow: 0 0 0 4px var(--primary-blue) inset;
             background-color: rgba(46, 123, 255, 0.1); /* Lighter hover state */
@@ -427,6 +430,7 @@
             opacity: 0.4;
         }
 
+        /* --- Footer --- */
         footer {
             margin-top: auto; /* Push footer to bottom */
             padding: 20px;
@@ -445,10 +449,10 @@
             text-decoration: underline;
         }
 
-        /* Responsive Design */
+        /* --- Responsive Design --- */
         @media (max-width: 900px) {
             body {
-                flex-direction: column;
+                flex-direction: column; /* Stack sidebar and main content vertically */
             }
             .sidebar {
                 width: 100%;
@@ -485,8 +489,7 @@
             .main-content {
                 padding: 20px;
                 flex-grow: 1; /* Allow main content to expand */
-                /* FIX: Important for horizontal scroll on mobile */
-                min-width: 0;
+                min-width: 0; /* CRITICAL: Ensure it can shrink on small screens */
             }
             .header {
                 flex-direction: column;
@@ -506,14 +509,14 @@
                 flex-direction: column;
                 gap: 10px;
             }
+            /* Kanban Board Styling for mobile - Important to keep horizontal scroll */
             .kanban-board {
-                /* FIX: Prevent columns from wrapping on smaller screens to maintain horizontal scroll */
-                flex-wrap: nowrap;
-                justify-content: flex-start; /* Ensure columns start from the left */
+                flex-wrap: nowrap; /* Prevent columns from wrapping, force horizontal scroll */
+                justify-content: flex-start; /* Align columns to the start */
             }
             .kanban-column {
-                min-width: 280px; /* Keep minimum width */
-                width: auto; /* Let content determine width, or min-width for columns */
+                min-width: 280px; /* Maintain minimum width for readability */
+                flex-shrink: 0; /* Prevent columns from shrinking below min-width */
                 max-height: calc(100vh - 180px); /* Adjusted for mobile header/footer */
             }
             .modal-content {
