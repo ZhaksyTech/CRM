@@ -3,1207 +3,502 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zhaksytech Complete Business System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Zhaksytech Mini CRM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4F81BD;
-            --secondary-color: #764ba2;
-            --accent-color: #28a745;
-            --text-color: #333;
-            --light-bg: #f8f9fa;
-            --border-color: #dee2e6;
-            --shadow: 0 5px 20px rgba(0,0,0,0.08);
-            --border-radius: 15px;
+            --primary-color: #2e7bff; /* Blue */
+            --secondary-color: #1e3a8a; /* Darker Blue */
+            --accent-color: #f59e0b; /* Amber */
+            --bg-light: #f3f4f6;
+            --text-dark: #1f2937;
+            --text-light: #f9fafb;
+            --border-color: #d1d5db;
+            --success-color: #10b981;
+            --error-color: #ef4444;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            min-height: 100vh;
-            color: var(--text-color);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             line-height: 1.6;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-        }
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), #365F91);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.8em;
-            font-weight: 700;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .header h1 i {
-            font-size: 0.9em;
-        }
-        .header p {
-            margin: 15px 0 0 0;
-            font-size: 1.3em;
-            opacity: 0.95;
-            font-weight: 400;
-        }
-        .tabs {
-            display: flex;
-            background: var(--light-bg);
-            border-bottom: 1px solid var(--border-color);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE and Edge */
-        }
-        .tabs::-webkit-scrollbar { /* Chrome, Safari, Opera */
-            display: none;
-        }
-        .tab {
-            padding: 18px 25px;
-            cursor: pointer;
-            background: var(--light-bg);
-            border: none;
-            font-size: 15px;
-            font-weight: 600;
-            color: #495057;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            flex-shrink: 0; /* Prevent tabs from shrinking */
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .tab:hover {
-            background: #e9ecef;
-            color: var(--primary-color);
-        }
-        .tab.active {
-            background: white;
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-            position: relative;
-            z-index: 1;
-        }
-        .content {
-            padding: 30px;
-            flex-grow: 1;
-        }
-        .sheet {
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
-        .sheet.active {
-            display: block;
+            min-height: 100vh;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .container {
+            background-color: var(--text-light);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            font-size: 2.5em;
+            font-weight: 700;
         }
 
         h2 {
-            font-family: 'Poppins', sans-serif;
             color: var(--primary-color);
-            font-size: 2em;
-            margin-top: 0;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-        h3 {
-            font-family: 'Poppins', sans-serif;
-            color: #365F91;
-            font-size: 1.3em;
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate; /* Use separate to allow border-radius on cells */
-            border-spacing: 0;
-            margin: 25px 0;
-            font-size: 15px;
-            box-shadow: var(--shadow);
-            border-radius: 8px;
-            overflow: hidden; /* Ensures border-radius applies to table content */
-        }
-        th, td {
-            padding: 18px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: top;
-        }
-        th {
-            background: linear-gradient(135deg, var(--primary-color), #365F91);
-            color: white;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
             font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        tr:nth-child(even) {
-            background: var(--light-bg);
-        }
-        tr:hover {
-            background: #e3f2fd;
-        }
-        /* Specific row styling for pricing */
-        .price-basic { background: #e6ffe6 !important; } /* Lighter green */
-        .price-pro { background: #e0f2ff !important; } /* Lighter blue */
-        .price-custom { background: #ffe6e6 !important; } /* Lighter red */
-
-        .feature-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .feature-list li {
-            padding: 5px 0;
-            position: relative;
-            padding-left: 25px;
-            font-size: 0.95em;
-        }
-        .feature-list li:before {
-            content: "\f00c"; /* Font Awesome checkmark */
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: var(--accent-color);
         }
 
-        .template-box {
-            background: var(--light-bg);
+        .form-section, .list-section {
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .template-box h3 {
-            margin: 0 0 15px 0;
-            color: var(--primary-color);
-            font-size: 1.3em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .template-box h3 i {
-            color: #365F91;
-        }
-        .copy-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .copy-btn:hover {
-            background: #365F91;
-            transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-        .copy-btn:active {
-            transform: translateY(0);
-            box-shadow: none;
-        }
-        .copy-btn.copied {
-            background: var(--accent-color);
+            font-size: 1em;
+            color: var(--text-dark);
+            background-color: #fff;
         }
 
-        .download-section {
-            background: linear-gradient(135deg, var(--accent-color), #20c997);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            margin: 30px 0;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-        .download-section h2 {
-            color: white;
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            border-bottom: none;
-        }
-        .download-section p {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        .download-btn {
-            background: white;
-            color: var(--accent-color);
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            margin: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
         }
 
-        .instructions {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
+        button {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 12px 25px;
+            border: none;
             border-radius: 8px;
-            padding: 25px;
-            margin: 20px 0;
-            color: #856404;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .instructions h3 {
-            color: #856404;
-            margin: 0 0 15px 0;
-            font-size: 1.4em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .instructions ol {
-            padding-left: 25px;
-            margin: 0;
-        }
-        .instructions li {
-            margin-bottom: 10px;
-            font-size: 0.95em;
-        }
-        .step-number {
-            background: var(--primary-color);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-            flex-shrink: 0;
+            gap: 8px;
         }
 
-        /* General bullet list styling for readability */
-        ul {
-            list-style: disc;
-            padding-left: 20px;
-        }
-        ul li {
-            margin-bottom: 5px;
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
         }
 
-        /* Media Queries for Responsiveness */
-        @media (max-width: 900px) {
-            .header h1 {
-                font-size: 2.2em;
-            }
-            .header p {
-                font-size: 1.1em;
-            }
-            .tab {
-                padding: 15px 18px;
-                font-size: 13px;
-            }
-            h2 {
-                font-size: 1.8em;
-            }
-            th, td {
-                padding: 15px;
-                font-size: 14px;
-            }
-            .download-btn {
-                padding: 12px 25px;
-                font-size: 15px;
-            }
+        button:active {
+            transform: translateY(0);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end; /* Align buttons to the right */
+            margin-top: 20px;
+        }
+
+        .clear-data-btn {
+            background-color: var(--error-color);
+        }
+
+        .clear-data-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .warning-message {
+            background-color: #fef2f2; /* Red-100 */
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .crm-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .crm-table th, .crm-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .crm-table th {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        .crm-table tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .crm-table tbody tr:hover {
+            background-color: #eff6ff; /* Blue-50 */
+        }
+
+        .crm-table .actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            margin-right: 8px;
+        }
+
+        .edit-btn {
+            background-color: var(--accent-color);
+        }
+
+        .edit-btn:hover {
+            background-color: #d97706;
+        }
+
+        .delete-btn {
+            background-color: var(--error-color);
+        }
+
+        .delete-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .stage-filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .stage-filter-group button {
+            background-color: #e0e7ff; /* Lighter blue */
+            color: var(--secondary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 15px;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .stage-filter-group button:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .stage-filter-group button.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.85em;
+            color: #6b7280;
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
+            .form-grid {
+                grid-template-columns: 1fr;
             }
-            .container {
-                border-radius: 10px;
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
             }
-            .header {
-                padding: 30px 15px;
+            button {
+                width: 100%;
             }
-            .header h1 {
-                font-size: 2em;
-            }
-            .header p {
-                font-size: 1em;
-            }
-            .tabs {
-                flex-wrap: nowrap; /* Keep tabs in a single row, allow scrolling */
-                justify-content: flex-start;
-            }
-            .content {
-                padding: 20px;
-            }
-            table {
-                font-size: 13px;
-            }
-            th, td {
-                padding: 12px;
-            }
-            .template-box {
-                padding: 15px;
-            }
-            .copy-btn {
-                top: 10px;
-                right: 10px;
-                padding: 8px 12px;
-                font-size: 11px;
-            }
-            .download-btn {
-                display: block;
-                width: calc(100% - 20px);
-                margin: 10px auto;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.6em;
-            }
-            .header p {
-                font-size: 0.9em;
-            }
-            .tab {
-                font-size: 12px;
-                padding: 12px 10px;
-            }
-            h2 {
-                font-size: 1.5em;
-            }
-            th, td {
-                padding: 10px;
-            }
-            .feature-list li {
-                padding-left: 20px;
-            }
-            .feature-list li:before {
-                font-size: 0.9em;
-            }
-            .copy-btn {
-                font-size: 10px;
-                padding: 6px 10px;
+            .stage-filter-group {
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-rocket"></i> Zhaksytech Complete Business System</h1>
-            <p>Everything you need to find clients and grow your development business</p>
-        </div>
-        
-        <div class="tabs">
-            <button class="tab active" onclick="showSheet('getting-started')"><i class="fas fa-play-circle"></i> Getting Started</button>
-            <button class="tab" onclick="showSheet('strategy')"><i class="fas fa-clipboard-list"></i> Strategy</button>
-            <button class="tab" onclick="showSheet('pricing')"><i class="fas fa-dollar-sign"></i> Pricing</button>
-            <button class="tab" onclick="showSheet('marketing')"><i class="fas fa-bullhorn"></i> Marketing</button>
-            <button class="tab" onclick="showSheet('outreach')"><i class="fas fa-mobile-alt"></i> Outreach</button>
-            <button class="tab" onclick="showSheet('proposals')"><i class="fas fa-file-invoice"></i> Proposals</button>
-            <button class="tab" onclick="showSheet('portfolio')"><i class="fas fa-th-large"></i> Portfolio</button>
-            <button class="tab" onclick="showSheet('client-management')"><i class="fas fa-users"></i> Client Management</button>
-        </div>
-        
-        <div class="content">
-            <div id="getting-started" class="sheet active">
-                <h2><i class="fas fa-play-circle"></i> Your Business Launch Checklist</h2>
-                <p>Before diving into client acquisition, ensure your foundations are solid. This checklist covers essential steps for setting up Zhaksytech for success.</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Step</th>
-                            <th>Action</th>
-                            <th>Details for Zhaksytech</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="step-number">1</span></td>
-                            <td>Legal & Registration</td>
-                            <td>Register your business (sole proprietorship, LLC, etc.) in your region. Obtain necessary licenses or permits. Consult local legal expert.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">2</span></td>
-                            <td>Business Bank Account</td>
-                            <td>Open a separate bank account for business finances to track income and expenses easily.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">3</span></td>
-                            <td>Essential Tools Setup</td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li><strong>Communication:</strong> Telegram (primary), Email, Zoom/Google Meet.</li>
-                                    <li><strong>Project Management:</strong> Trello, Asana (free tiers are excellent).</li>
-                                    <li><strong>Design/Wireframing:</strong> Figma, Balsamiq (free trials available).</li>
-                                    <li><strong>Code Repository:</strong> GitHub, GitLab.</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">4</span></td>
-                            <td>Payment Gateways</td>
-                            <td>Set up ways to receive payments. Consider local bank transfers, international options (Payoneer, Wise), or payment processors relevant to CIS (e.g., Stripe if available, local options).</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">5</span></td>
-                            <td>Standard Contracts</td>
-                            <td>Prepare simple service agreements/contracts. You can find templates online (consult a lawyer if possible) or create a basic one covering scope, payment terms, and intellectual property.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">6</span></td>
-                            <td>Define Your Niche (Revisit)</td>
-                            <td>Confirm your focus. While you offer various services, specializing in "automation for CIS businesses via Telegram bots & web apps" is a strong niche.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <h1>🚀 Zhaksytech Mini CRM</h1>
+        <p class="warning-message">
+            <strong>Important:</strong> This is a client-side prototype. All data is stored only in your browser's local storage. It is NOT shared with anyone else and will be lost if your browser's local storage is cleared. This is not a substitute for a full, secure CRM system.
+        </p>
 
-            <div id="strategy" class="sheet">
-                <h2><i class="fas fa-clipboard-list"></i> 16-Step Client Acquisition Strategy</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Step</th>
-                            <th>Action</th>
-                            <th>What to Do</th>
-                            <th>Example/Notes for Zhaksytech</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="step-number">1</span></td>
-                            <td>Define ICP</td>
-                            <td>Define your ideal customer profile: industry, size, location, problems, budget, where they look for services.</td>
-                            <td>Small to medium CIS businesses needing Telegram bots, web apps, and mobile apps for automation and customer engagement.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">2</span></td>
-                            <td>Create UVP</td>
-                            <td>Create unique value proposition explaining what problem you solve, why you're different, and benefits clients get.</td>
-                            <td>Zhaksytech builds smart, reliable Telegram bots, web apps, and mobile apps for CIS businesses - fast, affordable, expert local support, focused on *business automation and growth*.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">3</span></td>
-                            <td>Polish Portfolio</td>
-                            <td>Showcase your best projects with compelling case studies or testimonials.</td>
-                            <td>Highlight successful Telegram bots (e.g., automated sales, customer support), web apps (e.g., internal tools, booking platforms), and mobile apps (e.g., internal tools, loyalty apps) with client feedback and results.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">4</span></td>
-                            <td>Build Website/Online Presence</td>
-                            <td>Build a professional website or leverage strong free online presence tools (LinkedIn, Telegram channel).</td>
-                            <td>Focus on a clean, clear website (even a simple one on Wix/Google Sites) combined with an active LinkedIn profile and a dedicated Telegram channel for updates and insights.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">5</span></td>
-                            <td>Setup Social Media</td>
-                            <td>Use LinkedIn, Telegram, and Instagram to share your work, provide value, and engage potential clients.</td>
-                            <td>LinkedIn (professional network), Telegram groups (community engagement, direct outreach), Instagram (visuals, behind-the-scenes). Consistently post content relevant to business problems you solve.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">6</span></td>
-                            <td>Use Light CRM</td>
-                            <td>Use free CRM tools (Google Sheets, Trello, HubSpot free) to manage client contacts and track leads efficiently.</td>
-                            <td>Google Sheets or Trello board to track leads: Status (New, Contacted, Proposal Sent, Won, Lost), Contact Info, Notes, Follow-up Dates.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">7</span></td>
-                            <td>Establish Clear Pricing</td>
-                            <td>Define clear pricing structures or packages to build trust and ease client decisions. Offer clear tiers (Basic, Pro, Custom).</td>
-                            <td>See pricing sheet - ensure packages align with typical client needs and provide clear value at each tier. Clearly state what's included and what's extra.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">8</span></td>
-                            <td>Present as Expert</td>
-                            <td>Specialize in specific solutions (e.g., Telegram bots for sales automation, web apps for internal tools) for CIS businesses. Share knowledge and tips.</td>
-                            <td>Regularly publish content (even short Telegram posts or LinkedIn articles) on common business challenges and how your solutions address them. Be the go-to expert for multi-platform automation in the CIS.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">9</span></td>
-                            <td>Ask for Referrals</td>
-                            <td>Actively request referrals and testimonials from satisfied clients after project completion. Offer an incentive for successful referrals if appropriate.</td>
-                            <td>Implement a process to ask for reviews on your platforms (Google My Business, social media) and direct referrals from happy clients.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">10</span></td>
-                            <td>Attend Events</td>
-                            <td>Join local business meetups, online webinars, and industry conferences to network and present your services.</td>
-                            <td>Look for entrepreneurship events, tech meetups, and industry-specific gatherings in CIS countries. Participate actively, don't just attend.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">11</span></td>
-                            <td>Partner with Businesses</td>
-                            <td>Form strategic partnerships with complementary service providers like marketing agencies, web designers, or business consultants.</td>
-                            <td>Collaborate with agencies that might need development support for their clients. Offer mutual referral agreements.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">12</span></td>
-                            <td>Use Email Marketing (Optional)</td>
-                            <td>Build an email list (from website sign-ups, networking) and send occasional newsletters with case studies, tips, and service updates.</td>
-                            <td>Start small; a simple newsletter can keep your network engaged. Use free tools like Mailchimp or ConvertKit for small lists.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">13</span></td>
-                            <td>Leverage Freelance Platforms</td>
-                            <td>Sign up and actively bid on relevant projects on platforms like Upwork, Freelancer, or local CIS freelance platforms to gain initial traction and reputation.</td>
-                            <td>Focus on projects that align with your ICP and showcase your unique skills. Maintain a high rating and positive reviews.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">14</span></td>
-                            <td>Take SEO Seriously</td>
-                            <td>Optimize your website and online profiles with relevant keywords to improve search engine rankings.</td>
-                            <td>Research keywords like 'Telegram bot development Kazakhstan', 'web app development Almaty', 'business automation CIS'. Ensure your website content and meta descriptions include these.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">15</span></td>
-                            <td>Organic Social Media Engagement</td>
-                            <td>Post regularly, share valuable insights, and actively engage with your audience on social media to build trust and visibility.</td>
-                            <td>Use industry-specific hashtags, tag relevant businesses, and respond to comments and messages promptly. Show your expertise and personality.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">16</span></td>
-                            <td>Send Personalized Proposals</td>
-                            <td>Always send tailored proposals that clearly address the client's specific needs, challenges, and desired outcomes.</td>
-                            <td>Demonstrate you understand their business, not just their technical request. Connect your solution directly to their business goals.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="pricing" class="sheet">
-                <h2><i class="fas fa-dollar-sign"></i> Service Pricing (USD) - Starting Rates</h2>
-                <p>These are starting prices for common projects. Final pricing will depend on specific features, complexity, integrations, and desired timeline. Always provide a custom quote after understanding the client's full requirements.</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Service Category</th>
-                            <th>Features & Scope</th>
-                            <th>Starting Price (USD)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="price-basic">
-                            <td><strong>Basic Telegram Bot</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>Simple interaction flow (e.g., Q&A, menu navigation)</li>
-                                    <li>Up to 5 basic commands/pages</li>
-                                    <li>Basic admin notifications (e.g., new form submission)</li>
-                                    <li>Standard text and button responses</li>
-                                    <li>Deployment & 1 week basic support</li>
-                                </ul>
-                            </td>
-                            <td><strong>$300 - $800</strong></td>
-                        </tr>
-                        <tr class="price-pro">
-                            <td><strong>Pro Telegram Bot</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>All Basic features, plus:</li>
-                                    <li>Integrated admin panel (web-based or bot-based)</li>
-                                    <li>Google Sheets, CRM (HubSpot Free), or simple database integration</li>
-                                    <li>Basic payment system integration (e.g., Stripe link, local payment gateway)</li>
-                                    <li>User authentication (simple)</li>
-                                    <li>Advanced logic and user state management</li>
-                                    <li>2 weeks post-launch support & minor revisions</li>
-                                </ul>
-                            </td>
-                            <td><strong>$800 - $2,500</strong></td>
-                        </tr>
-                        <tr class="price-custom">
-                            <td><strong>Custom Telegram Bot</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>Complex custom logic and multi-step workflows</li>
-                                    <li>Multiple API integrations (e.g., e-commerce, third-party services)</li>
-                                    <li>Advanced automation workflows (e.g., drip campaigns, scheduling)</li>
-                                    <li>Comprehensive database design and management</li>
-                                    <li>Real-time updates & notifications</li>
-                                    <li>Multi-language support</li>
-                                    <li>Full custom admin dashboard</li>
-                                    <li>Dedicated support & maintenance plan options</li>
-                                </ul>
-                            </td>
-                            <td><strong>$2,500+ (Custom Quote)</strong></td>
-                        </tr>
-                        <tr class="price-basic">
-                            <td><strong>Basic Web App (Landing/Info Site)</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>1-5 static, responsive pages (e.g., About Us, Services, Contact)</li>
-                                    <li>Basic contact form functionality</li>
-                                    <li>SEO-friendly structure</li>
-                                    <li>Mobile-first design</li>
-                                    <li>Deployment & hosting setup guidance</li>
-                                </ul>
-                            </td>
-                            <td><strong>$400 - $1,200</strong></td>
-                        </tr>
-                        <tr class="price-pro">
-                            <td><strong>Pro Web App (Dynamic / CRM Lite)</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>Full-stack web application with dynamic content</li>
-                                    <li>User authentication & basic roles (e.g., user/admin)</li>
-                                    <li>Simple CRUD (Create, Read, Update, Delete) operations</li>
-                                    <li>API integration (e.g., social media login, basic analytics)</li>
-                                    <li>Responsive admin panel for content/user management</li>
-                                    <li>Basic database integration</li>
-                                    <li>Deployment & 2 weeks post-launch support</li>
-                                </ul>
-                            </td>
-                            <td><strong>$1,500 - $4,000</strong></td>
-                        </tr>
-                        <tr class="price-custom">
-                            <td><strong>Custom Web App (Complex/Enterprise)</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>Custom architecture for high-performance & scalability</li>
-                                    <li>Advanced API integrations & third-party services</li>
-                                    <li>Complex business logic & custom workflows</li>
-                                    <li>Rich user interfaces & interactive elements</li>
-                                    <li>Sophisticated database design & optimization</li>
-                                    <li>Real-time features (e.g., chat, live dashboards)</li>
-                                    <li>Advanced security features</li>
-                                    <li>Ongoing maintenance & dedicated support plans</li>
-                                </ul>
-                            </td>
-                            <td><strong>$4,000+ (Custom Quote)</strong></td>
-                        </tr>
-                        <tr class="price-basic">
-                            <td><strong>Basic Mobile App (Informational)</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>Simple mobile UI with 3-5 static screens</li>
-                                    <li>Displaying information, contact details, basic forms</li>
-                                    <li>Native or cross-platform (Flutter/React Native) development for one platform</li>
-                                    <li>Basic app store submission guidance</li>
-                                </ul>
-                            </td>
-                            <td><strong>$500 - $1,500</strong></td>
-                        </tr>
-                        <tr class="price-pro">
-                            <td><strong>Pro Mobile App (Functional/Connected)</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>Functional app with user authentication</li>
-                                    <li>Backend/API integration for dynamic data</li>
-                                    <li>Basic CRUD operations within the app</li>
-                                    <li>Push notifications (basic)</li>
-                                    <li>Admin access for content/user management</li>
-                                    <li>Testing on multiple devices</li>
-                                    <li>App store submission support for one platform</li>
-                                </ul>
-                            </td>
-                            <td><strong>$2,000 - $5,000</strong></td>
-                        </tr>
-                        <tr class="price-custom">
-                            <td><strong>Custom Mobile App (Advanced/Complex)</strong></td>
-                            <td>
-                                <ul class="feature-list">
-                                    <li>Full app logic with complex interactions</li>
-                                    <li>Real-time features, geolocation, media integration</li>
-                                    <li>Integration with device hardware (camera, GPS, etc.)</li>
-                                    <li>Advanced backend infrastructure</li>
-                                    <li>Comprehensive security measures</li>
-                                    <li>Publishing to both iOS App Store and Google Play Store</li>
-                                    <li>Post-launch support, updates, and maintenance plans</li>
-                                </ul>
-                            </td>
-                            <td><strong>$5,000+ (Custom Quote)</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="marketing" class="sheet">
-                <h2><i class="fas fa-bullhorn"></i> Marketing Materials</h2>
-                <p>Use these templates to craft your online presence and messaging.</p>
-                
-                <div class="template-box">
-                    <h3><i class="fab fa-linkedin"></i> LinkedIn Headline</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('linkedin-headline')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="linkedin-headline">🚀 Telegram Bot, Web App & Mobile App Developer | Automating Sales & Operations for CIS Businesses | Founder of Zhaksytech</div>
-                </div>
-
-                <div class="template-box">
-                    <h3><i class="fab fa-linkedin"></i> LinkedIn About Section</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('linkedin-about')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="linkedin-about">Hi, I'm Maksat Zhaksybaev, founder of Zhaksytech.
-
-At Zhaksytech, we empower small and mid-sized businesses across the CIS region by building intelligent Telegram bots, powerful web applications, and intuitive mobile apps. Our solutions are designed to automate operations, streamline sales, enhance customer support, and drive rapid growth — without the typical high costs or lengthy development cycles.
-
-What sets us apart?
-✅ We deliver solutions swiftly and efficiently.
-✅ We offer dedicated local expertise and support.
-✅ We're committed to delivering tangible business results, not just code.
-
-Let's connect if your business is looking to leverage technology to:
-* Automate repetitive tasks with a smart Telegram bot.
-* Build a scalable web app to manage your operations or serve customers.
-* Launch a mobile app to engage your audience on the go.
-
-Ready to explore how custom software can transform your business?
-📩 DM me directly here on LinkedIn or reach out on Telegram: @zhaksy_tech</div>
-                </div>
-
-                <div class="template-box">
-                    <h3><i class="fas fa-handshake"></i> Unique Value Proposition (UVP)</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('uvp')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="uvp">Zhaksytech designs and develops smart, reliable Telegram bots, web applications, and mobile apps specifically for businesses in the CIS region. We automate your sales, support, and internal operations quickly and affordably, backed by trusted local tech expertise, helping you grow efficiently.</div>
-                </div>
-            </div>
-
-            <div id="outreach" class="sheet">
-                <h2><i class="fas fa-mobile-alt"></i> Outreach Templates</h2>
-                <p>Use these for cold outreach and follow-ups to potential clients.</p>
-                
-                <div class="template-box">
-                    <h3><i class="fab fa-telegram-plane"></i> Telegram Outreach Message 1 (Cold)</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('telegram-cold')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="telegram-cold">Hi! 👋  
-I noticed your business and thought I'd reach out.
-
-At Zhaksytech, we specialize in building smart Telegram bots, web apps, and mobile apps that help automate sales, improve customer support, and streamline internal operations. If you're ever interested in using custom technology to save time, reduce costs, or boost revenue, I'd be happy to share some ideas or show you a quick demo relevant to your business.
-
-No pressure at all — just let me know if it's something you're exploring! 😊  
-
-Best regards,
-Maksat from Zhaksytech | @zhaksy_tech</div>
-                </div>
-
-                <div class="template-box">
-                    <h3><i class="fab fa-telegram-plane"></i> Telegram Outreach Message 2 (Follow-up)</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('telegram-followup')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="telegram-followup">Hey again! Just dropping this here — if you're ever curious how a custom Telegram bot, web app, or mobile solution could specifically help your business with automation or customer engagement, I'd still love to chat.
-
-We've built a range of solutions, from automated sales bots and internal management web platforms to customer loyalty mobile apps.
-
-We offer a free, no-obligation consultation to discuss your needs and how we might help. Let me know if you're open to a brief call! 💡</div>
-                </div>
-
-                <div class="template-box">
-                    <h3><i class="fab fa-linkedin"></i> LinkedIn Connection Request</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('linkedin-connect')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="linkedin-connect">Hi [Name]! I help CIS businesses like yours automate operations and drive growth with custom Telegram bots, web apps, and mobile solutions. Would love to connect and share insights on business technology.</div>
-                </div>
-            </div>
-
-            <div id="proposals" class="sheet">
-                <h2><i class="fas fa-file-invoice"></i> Proposal Templates</h2>
-                <p>Use this format to send clear and concise proposals to potential clients. Remember to always personalize it!</p>
-                
-                <div class="template-box">
-                    <h3><i class="fas fa-scroll"></i> Client Proposal Format</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('proposal-template')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="proposal-template">📄 **Proposal for [Service Type] Development**
-
-**👤 Client Name:** [Insert Client's Name/Company Name]
-**📅 Date:** [Insert Date]
-
----
-
-**🔧 Project Goal & Client Needs:**
-[Clearly and concisely describe the primary problem the client wants to solve or the goal they want to achieve.
-*Example: "The client aims to automate their product ordering process within Telegram to reduce manual work and improve customer response time."*
-*Example: "The client needs a web-based platform to manage their inventory and track sales data more efficiently."*]
-
----
-
-**✅ Our Proposed Solution:**
-Zhaksytech will develop a custom [**Telegram bot** / **Web application** / **Mobile application**] that includes the following key features and functionalities:
-
-* **Core Feature 1:** [e.g., Automated product catalog display with inline buttons]
-* **Core Feature 2:** [e.g., Secure user registration and login]
-* **Core Feature 3:** [e.g., Integrated payment processing via [Specific Payment Gateway]]
-* **Core Feature 4:** [e.g., Admin panel for managing products, orders, and users]
-* **Core Feature 5:** [e.g., Real-time notifications for new orders/inquiries]
-* **Integration:** [List any specific API or database integrations, e.g., CRM, Google Sheets, external booking system]
-* **Language Support:** [Specify languages, e.g., Russian, Kazakh, English]
-* **Responsive Design:** [If applicable, mention multi-device compatibility]
-
----
-
-**⏰ Estimated Timeline:**
-We estimate this project will take approximately **[e.g., 3-6 weeks / 15-30 business days]** from project kick-off to initial deployment, depending on prompt feedback and content provision from your side.
-
----
-
-**🤝 Support & Maintenance:**
-* Includes **[e.g., 2 weeks]** of post-launch bug fixing and critical support.
-* Optional ongoing maintenance and feature enhancement packages available upon request.
-
----
-
-**💰 Investment (Price):**
-Based on the agreed-upon scope and features, the total investment for this [Service Type] development is:
-
-**[Insert Final Quoted Price based on your analysis and pricing sheet, e.g., $X,XXX USD]**
-
-*Payment Terms: [e.g., 50% upfront, 50% upon completion; or staged payments for larger projects]*
-
----
-
-**📞 Next Steps:**
-Please review this proposal. We are happy to schedule a follow-up call to discuss any questions or make adjustments.
-
-**Contact:**
-Maksat Zhaksybaev
-Telegram: @zhaksy_tech
-Email: zhaksytech@gmail.com
-
-Thank you for considering Zhaksytech to partner on your business growth! 🚀</div>
-                </div>
-
-                <div class="template-box">
-                    <h3><i class="fas fa-lightbulb"></i> Project Examples for Proposals (Ideas)</h3>
-                    <div>
-                        <strong>For Telegram Bots:</strong><br>
-                        • Customer service automation and FAQ bots<br>
-                        • Automated order placement and tracking systems<br>
-                        • Event registration and ticketing bots<br>
-                        • Lead generation and CRM integration bots<br>
-                        • Content delivery and subscription management<br>
-                        • Internal team communication and task management bots<br><br>
-                        
-                        <strong>For Web Apps:</strong><br>
-                        • Custom business dashboards and analytics platforms<br>
-                        • E-commerce platforms with advanced features<br>
-                        • Online booking and appointment scheduling systems<br>
-                        • CRM and project management systems for internal use<br>
-                        • Membership portals and subscription services<br>
-                        • Inventory management and supply chain tracking<br><br>
-                        
-                        <strong>For Mobile Apps:</strong><br>
-                        • Customer loyalty and rewards apps<br>
-                        • Delivery tracking and logistics management<br>
-                        • Field service management apps for employees<br>
-                        • Social networking or community platforms<br>
-                        • E-learning and content consumption apps<br>
-                        • Custom utility apps for specific industry needs
+        <div class="form-section">
+            <h2>Add New Client/Lead</h2>
+            <form id="clientForm">
+                <input type="hidden" id="clientId">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Client Name:</label>
+                        <input type="text" id="name" required placeholder="e.g., Almas Saparov">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company:</label>
+                        <input type="text" id="company" placeholder="e.g., Astana Innovations">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactInfo">Contact Info:</label>
+                        <input type="text" id="contactInfo" required placeholder="e.g., @almas_tech (Telegram), +77771234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="stage">Pipeline Stage:</label>
+                        <select id="stage" required>
+                            <option value="New Lead">1. New Lead</option>
+                            <option value="Initial Outreach">2. Initial Outreach</option>
+                            <option value="Discovery/Qualifying">3. Discovery/Qualifying</option>
+                            <option value="Proposal Sent">4. Proposal Sent</option>
+                            <option value="Negotiation/Follow-up">5. Negotiation/Follow-up</option>
+                            <option value="Won">6. Won (Project Started)</option>
+                            <option value="Lost">7. Lost (Reason: ...)</option>
+                            <option value="Project Delivered">8. Project Delivered</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-
-            <div id="portfolio" class="sheet">
-                <h2><i class="fas fa-th-large"></i> Portfolio & Capabilities</h2>
-                <p>Use this content to describe your company and services on your website, social media, or in presentations.</p>
-                
-                <div class="template-box">
-                    <h3><i class="fas fa-building"></i> About Zhaksytech</h3>
-                    <button class="copy-btn" onclick="copyToClipboard('portfolio-about')"><i class="far fa-copy"></i> Copy</button>
-                    <div id="portfolio-about">At Zhaksytech, we are dedicated to building innovative and robust digital solutions that empower businesses in the CIS region to thrive in the digital age. We specialize in creating custom Telegram bots, sophisticated web applications, and intuitive mobile apps designed to automate your processes, engage your customers, and accelerate your growth.
-
-Our expertise spans:
-🤖 **Telegram Bot Development:** From automating customer support and sales flows to building complex interactive platforms and integrating with various services.
-🌐 **Web Application Development:** Crafting high-performance, scalable web solutions including custom business dashboards, e-commerce platforms, CRM systems, and internal management tools.
-📱 **Mobile App Development:** Delivering seamless and engaging mobile experiences for both iOS and Android, focusing on user-friendly interfaces and powerful backend integrations.
-
-Every project at Zhaksytech is approached with a focus on delivering tangible results, ensuring optimal performance, speed, and long-term client success. We pride ourselves on providing local, reliable support and solutions that truly make a difference to your bottom line.</div>
+                <div class="form-group">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" placeholder="Any specific details, requirements, or next steps."></textarea>
                 </div>
-
-                <div class="template-box">
-                    <h3><i class="fas fa-cogs"></i> Our Service Categories & Expertise</h3>
-                    <div>
-                        <strong>Telegram Bot Development:</strong><br>
-                        • Customer service and FAQ automation<br>
-                        • E-commerce and order management bots<br>
-                        • CRM integration and lead generation<br>
-                        • Booking and appointment scheduling systems<br>
-                        • Content delivery, subscription, and notification bots<br>
-                        • Interactive game and quiz bots<br><br>
-
-                        <strong>Web Application Development:</strong><br>
-                        • Custom business dashboards and analytics<br>
-                        • Full-fledged e-commerce platforms and marketplaces<br>
-                        • Internal CRM and management systems<br>
-                        • Online learning platforms and course management<br>
-                        • Booking, reservation, and event management systems<br>
-                        • API development and third-party integrations<br><br>
-
-                        <strong>Mobile App Development (iOS & Android):</strong><br>
-                        • Native iOS and Android application development<br>
-                        • Cross-platform solutions using Flutter/React Native<br>
-                        • Customer loyalty and engagement applications<br>
-                        • Business management and productivity apps<br>
-                        • Real-time communication and social networking apps<br>
-                        • GPS and location-based service integration
-                    </div>
+                <div class="button-group">
+                    <button type="submit" id="submitBtn">➕ Add Client</button>
+                    <button type="button" id="clearFormBtn" style="background-color: #6b7280;">Clear Form</button>
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <div id="client-management" class="sheet">
-                <h2><i class="fas fa-users"></i> Client Management Workflow</h2>
-                <p>A systematic approach to managing your client interactions from lead to successful project completion and beyond.</p>
-                <table>
+        <div class="list-section">
+            <h2>Your Clients & Leads</h2>
+            <div class="stage-filter-group" id="stageFilters">
+                <button class="active" data-stage="All">All Stages</button>
+                <button data-stage="New Lead">New Leads</button>
+                <button data-stage="Initial Outreach">Outreach</button>
+                <button data-stage="Discovery/Qualifying">Discovery</button>
+                <button data-stage="Proposal Sent">Proposal Sent</button>
+                <button data-stage="Negotiation/Follow-up">Negotiation</button>
+                <button data-stage="Won">Won</button>
+                <button data-stage="Lost">Lost</button>
+                <button data-stage="Project Delivered">Delivered</button>
+            </div>
+            <div class="table-container">
+                <table class="crm-table">
                     <thead>
                         <tr>
-                            <th>Phase</th>
-                            <th>Key Actions</th>
-                            <th>Notes for Zhaksytech</th>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Contact Info</th>
+                            <th>Stage</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="step-number">1</span></td>
-                            <td>Initial Contact & Discovery</td>
-                            <td>Respond quickly to inquiries. Schedule an initial call to understand client's core problem, business goals, and current challenges. Listen more than you talk.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">2</span></td>
-                            <td>Needs Assessment & Solution Ideation</td>
-                            <td>Based on discovery call, propose 1-3 potential solutions (e.g., "A Telegram bot could automate X, or a simple web app could do Y"). Discuss feasibility and align on a primary solution.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">3</span></td>
-                            <td>Proposal & Pricing</td>
-                            <td>Send a detailed, personalized proposal (using your template) outlining scope, features, timeline, and investment. Be clear about what's included and any out-of-scope items.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">4</span></td>
-                            <td>Contract & Onboarding</td>
-                            <td>Once proposal is accepted, send service agreement. Collect initial payment. Kick-off meeting to solidify requirements, set communication channels, and introduce project tools (e.g., Trello board).</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">5</span></td>
-                            <td>Development & Communication</td>
-                            <td>Regular updates (daily/weekly as agreed). Use project management tools for transparency. Manage expectations on scope changes. Get regular feedback on progress.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">6</span></td>
-                            <td>Testing & Revisions</td>
-                            <td>Present working versions for client testing. Collect feedback and implement revisions within the agreed scope. Ensure all features work as intended.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">7</span></td>
-                            <td>Deployment & Training</td>
-                            <td>Deploy the solution. Provide necessary training for the client/their team on how to use the bot/app/platform effectively. Hand over any credentials or documentation.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">8</span></td>
-                            <td>Post-Launch Support & Feedback</td>
-                            <td>Provide agreed-upon post-launch support. Schedule a feedback call 1-2 weeks after launch to ensure satisfaction. Politely ask for testimonials or referrals if they are happy.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="step-number">9</span></td>
-                            <td>Relationship Nurturing (Long-Term)</td>
-                            <td>Stay in touch occasionally (e.g., share relevant articles, offer future upgrades). Happy clients are your best source of repeat business and referrals.</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="clientList">
+                        </tbody>
                 </table>
             </div>
-
-
-            <div class="instructions">
-                <h3><i class="fas fa-info-circle"></i> How to Use This in Google Sheets (Recommended)</h3>
-                <p>To keep this system organized and editable, we recommend setting it up in Google Sheets:</p>
-                <ol>
-                    <li><strong class="step-number">1</strong> <strong>Create a New Google Sheets Document:</strong> Go to Google Sheets and start a blank spreadsheet.</li>
-                    <li><strong class="step-number">2</strong> <strong>Create Separate Sheets (Tabs):</strong> At the bottom of the Google Sheet, click the "+" icon to add new tabs. Name them:
-                        <ul style="list-style: circle; padding-left: 20px; margin-top: 5px;">
-                            <li>Getting Started</li>
-                            <li>Strategy</li>
-                            <li>Pricing</li>
-                            <li>Marketing</li>
-                            <li>Outreach</li>
-                            <li>Proposals</li>
-                            <li>Portfolio</li>
-                            <li>Client Management</li>
-                        </ul>
-                    </li>
-                    <li><strong class="step-number">3</strong> <strong>Copy Content from Each Section:</strong>
-                        <ul style="list-style: circle; padding-left: 20px; margin-top: 5px;">
-                            <li>For <strong>tables</strong> (Strategy, Pricing, Client Management), copy the table directly. Google Sheets is usually good at pasting tables correctly.</li>
-                            <li>For <strong>text-based sections</strong> (Marketing, Outreach, Proposals, Portfolio), copy the content from each "template-box" individually and paste into relevant cells in your Google Sheet. You might use one cell for the title and the cell below for the content, or structure as a simple list.</li>
-                        </ul>
-                    </li>
-                    <li><strong class="step-number">4</strong> <strong>Format & Customize:</strong>
-                        <ul style="list-style: circle; padding-left: 20px; margin-top: 5px;">
-                            <li>Use **borders** for tables, **bold** for headers, and adjust **column widths** for readability.</li>
-                            <li>Add **background colors** to rows in your Pricing sheet (e.g., light green for Basic, light blue for Pro, light red for Custom) to match the visual coding here.</li>
-                            <li>Enable **text wrapping** for cells containing longer text descriptions to ensure everything is visible.</li>
-                            <li>Feel free to **edit the content** to perfectly fit your voice, services, and specific client needs.</li>
-                        </ul>
-                    </li>
-                    <li><strong class="step-number">5</strong> <strong>Save & Access:</strong> Your system is now saved in the cloud and accessible from anywhere!</li>
-                </ol>
-            </div>
-
-            <div class="download-section">
-                <h2>🎯 Ready to Launch & Grow Zhaksytech?</h2>
-                <p>You now have a comprehensive system to streamline your client acquisition and business operations.</p>
-                <button class="download-btn" onclick="copyAllContent()"><i class="fas fa-copy"></i> Copy All Content</button>
-                <button class="download-btn" onclick="printPage()"><i class="fas fa-print"></i> Print / Save as PDF</button>
+            <div class="button-group" style="justify-content: flex-start; margin-top: 30px;">
+                <button type="button" class="clear-data-btn" id="clearAllDataBtn">⚠️ Clear All Data</button>
             </div>
         </div>
     </div>
 
+    <footer>
+        <p>&copy; 2025 Zhaksytech. Mini CRM Prototype.</p>
+        <p>Built with HTML, CSS, and JavaScript. Data is stored locally in your browser.</p>
+    </footer>
+
     <script>
-        function showSheet(sheetName) {
-            // Hide all sheets
-            document.querySelectorAll('.sheet').forEach(sheet => sheet.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected sheet and tab
-            document.getElementById(sheetName).classList.add('active');
-            // Find the button that was clicked and add active class
-            document.querySelector(`.tab[onclick*="${sheetName}"]`).classList.add('active');
+        const CLIENTS_STORAGE_KEY = 'zhaksytech_crm_clients';
+        let clients = [];
+        let editingClientId = null;
+        let currentFilterStage = 'All';
 
-            // Scroll to the top of the content area for better UX
-            document.querySelector('.content').scrollTop = 0;
+        const clientForm = document.getElementById('clientForm');
+        const clientIdInput = document.getElementById('clientId');
+        const nameInput = document.getElementById('name');
+        const companyInput = document.getElementById('company');
+        const contactInfoInput = document.getElementById('contactInfo');
+        const stageSelect = document.getElementById('stage');
+        const notesInput = document.getElementById('notes');
+        const submitBtn = document.getElementById('submitBtn');
+        const clearFormBtn = document.getElementById('clearFormBtn');
+        const clientListBody = document.getElementById('clientList');
+        const clearAllDataBtn = document.getElementById('clearAllDataBtn');
+        const stageFilters = document.getElementById('stageFilters');
+
+        // --- Data Handling ---
+        function loadClients() {
+            const storedClients = localStorage.getItem(CLIENTS_STORAGE_KEY);
+            clients = storedClients ? JSON.parse(storedClients) : [];
+            renderClients();
         }
 
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            // Use a range and selection for reliable copying across browsers, especially for complex text
-            const range = document.createRange();
-            range.selectNode(element);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            
-            try {
-                const successful = document.execCommand('copy');
-                const btn = element.parentNode.querySelector('.copy-btn');
-                const originalText = btn.innerHTML; // Get innerHTML to preserve icon
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.classList.add('copied');
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('copied');
-                }, 2000);
-            } catch (err) {
-                alert('Oops, unable to copy. Please select the text manually.');
-                console.error('Copy command failed:', err);
+        function saveClients() {
+            localStorage.setItem(CLIENTS_STORAGE_KEY, JSON.stringify(clients));
+        }
+
+        // --- UI Rendering ---
+        function renderClients() {
+            clientListBody.innerHTML = ''; // Clear current list
+            const filteredClients = clients.filter(client => 
+                currentFilterStage === 'All' || client.stage === currentFilterStage
+            );
+
+            if (filteredClients.length === 0) {
+                clientListBody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px;">No clients found in this stage.</td></tr>`;
+                return;
             }
-            window.getSelection().removeAllRanges(); // Deselect after copying
-        }
 
-        function printPage() {
-            // Hide everything except the active sheet for printing
-            document.body.classList.add('print-mode'); // Add a class for print-specific CSS
-            const tabs = document.querySelector('.tabs');
-            const header = document.querySelector('.header');
-            const downloadSection = document.querySelector('.download-section');
-            const instructionsSection = document.querySelector('.instructions');
-            
-            tabs.style.display = 'none';
-            header.style.display = 'none';
-            downloadSection.style.display = 'none';
-            instructionsSection.style.display = 'none';
+            filteredClients.forEach(client => {
+                const row = clientListBody.insertRow();
+                row.dataset.id = client.id; // Store ID on the row for easy access
 
-            window.print();
-
-            // Restore display after printing
-            tabs.style.display = 'flex';
-            header.style.display = 'block';
-            downloadSection.style.display = 'block';
-            instructionsSection.style.display = 'block';
-            document.body.classList.remove('print-mode');
-        }
-
-        function copyAllContent() {
-            const container = document.querySelector('.container');
-            const tempTextArea = document.createElement('textarea');
-            // Extract text content from all relevant sections
-            let allText = '';
-            
-            // Header
-            allText += container.querySelector('.header h1').textContent + '\n';
-            allText += container.querySelector('.header p').textContent + '\n\n';
-
-            // Iterate through each sheet (even inactive ones) to get all content
-            document.querySelectorAll('.sheet').forEach(sheet => {
-                const sheetTitle = sheet.querySelector('h2').textContent;
-                allText += '--- ' + sheetTitle.trim() + ' ---\n\n';
-
-                // Handle tables
-                sheet.querySelectorAll('table').forEach(table => {
-                    table.querySelectorAll('tr').forEach(row => {
-                        Array.from(row.children).forEach((cell, index) => {
-                            allText += cell.textContent.trim().replace(/\s+/g, ' ') + (index === row.children.length - 1 ? '' : '\t'); // Tab-separated for columns
-                        });
-                        allText += '\n';
-                    });
-                    allText += '\n'; // Add extra line after each table
-                });
-
-                // Handle template boxes and other div content
-                sheet.querySelectorAll('.template-box div:not(.copy-btn)').forEach(div => {
-                    allText += div.textContent.trim() + '\n\n';
-                });
-                
-                // Handle general paragraphs and lists not in template boxes/tables
-                sheet.querySelectorAll('p, ul, ol').forEach(element => {
-                    if (!element.closest('.template-box') && !element.closest('table')) {
-                        allText += element.textContent.trim() + '\n\n';
-                    }
-                });
-
-                allText += '\n'; // Add extra line after each sheet content
+                row.innerHTML = `
+                    <td>${client.name}</td>
+                    <td>${client.company}</td>
+                    <td>${client.contactInfo}</td>
+                    <td>${client.stage}</td>
+                    <td>${client.notes.length > 50 ? client.notes.substring(0, 50) + '...' : client.notes}</td>
+                    <td class="actions">
+                        <button class="edit-btn" onclick="editClient('${client.id}')">Edit</button>
+                        <button class="delete-btn" onclick="deleteClient('${client.id}')">Delete</button>
+                    </td>
+                `;
             });
-
-            // Add instructions at the end
-            allText += '\n--- Instructions ---\n';
-            allText += document.querySelector('.instructions').textContent.trim() + '\n\n';
-
-
-            tempTextArea.value = allText;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
-            
-            alert('All content copied to clipboard! You can now paste it into Google Sheets or a document for easy editing and organization.');
         }
 
-        // Initialize the first sheet on load
-        document.addEventListener('DOMContentLoaded', () => {
-            showSheet('getting-started'); // Show the "Getting Started" sheet first
+        function clearForm() {
+            clientIdInput.value = '';
+            nameInput.value = '';
+            companyInput.value = '';
+            contactInfoInput.value = '';
+            stageSelect.value = 'New Lead';
+            notesInput.value = '';
+            submitBtn.textContent = '➕ Add Client';
+            editingClientId = null;
+        }
+
+        // --- Event Handlers ---
+        clientForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const clientData = {
+                id: clientIdInput.value || crypto.randomUUID(), // Generate new ID if not editing
+                name: nameInput.value.trim(),
+                company: companyInput.value.trim(),
+                contactInfo: contactInfoInput.value.trim(),
+                stage: stageSelect.value,
+                notes: notesInput.value.trim()
+            };
+
+            if (editingClientId) {
+                // Update existing client
+                const index = clients.findIndex(c => c.id === editingClientId);
+                if (index !== -1) {
+                    clients[index] = clientData;
+                }
+            } else {
+                // Add new client
+                clients.push(clientData);
+            }
+
+            saveClients();
+            clearForm();
+            renderClients();
         });
+
+        clearFormBtn.addEventListener('click', clearForm);
+
+        clearAllDataBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear ALL client data? This action cannot be undone!')) {
+                clients = [];
+                saveClients();
+                renderClients();
+                clearForm();
+            }
+        });
+
+        stageFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                // Remove active class from all buttons
+                stageFilters.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                // Add active class to the clicked button
+                e.target.classList.add('active');
+                
+                currentFilterStage = e.target.dataset.stage;
+                renderClients();
+            }
+        });
+
+        // --- CRUD Operations ---
+        function editClient(id) {
+            const client = clients.find(c => c.id === id);
+            if (client) {
+                clientIdInput.value = client.id;
+                nameInput.value = client.name;
+                companyInput.value = client.company;
+                contactInfoInput.value = client.contactInfo;
+                stageSelect.value = client.stage;
+                notesInput.value = client.notes;
+
+                submitBtn.textContent = '💾 Update Client';
+                editingClientId = client.id;
+                // Scroll to form for easier editing on mobile
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function deleteClient(id) {
+            if (confirm('Are you sure you want to delete this client?')) {
+                clients = clients.filter(client => client.id !== id);
+                saveClients();
+                renderClients();
+                // If the deleted client was being edited, clear the form
+                if (editingClientId === id) {
+                    clearForm();
+                }
+            }
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', loadClients);
     </script>
 </body>
 </html>
