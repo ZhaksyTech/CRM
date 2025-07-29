@@ -315,6 +315,23 @@
             color: #333;
         }
 
+        /* Confirmation Modal Specific Styles */
+        #confirm-modal .modal-content {
+            text-align: center;
+            padding-bottom: 20px; /* Adjust padding for buttons */
+        }
+        #confirm-modal .modal-content p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: #343a40;
+        }
+        #confirm-modal .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+
         /* Template box styling */
         .template-box {
             background: #f8f9fa;
@@ -640,6 +657,18 @@
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Confirmation</h2>
+            <p id="confirm-message"></p>
+            <div class="modal-actions">
+                <button class="btn-danger" id="confirm-yes-btn">Yes, Delete</button>
+                <button class="btn-secondary" id="confirm-no-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Message Box -->
     <div id="message-box" class="message-box"></div>
 
@@ -726,6 +755,31 @@
             if (modalId === 'proposal-modal') document.getElementById('proposal-form').reset();
             if (modalId === 'template-modal') document.getElementById('template-form').reset();
         }
+
+        // --- Custom Confirmation Modal ---
+        let confirmCallback = null; // Stores the function to call if confirmed
+
+        function showConfirmModal(message, onConfirm) {
+            document.getElementById('confirm-message').textContent = message;
+            confirmCallback = onConfirm;
+            openModal('confirm-modal');
+        }
+
+        document.getElementById('confirm-yes-btn').addEventListener('click', () => {
+            if (confirmCallback) {
+                confirmCallback(true); // Call the callback with true for confirmation
+            }
+            closeModal('confirm-modal');
+            confirmCallback = null; // Reset callback
+        });
+
+        document.getElementById('confirm-no-btn').addEventListener('click', () => {
+            if (confirmCallback) {
+                confirmCallback(false); // Call the callback with false for cancellation
+            }
+            closeModal('confirm-modal');
+            confirmCallback = null; // Reset callback
+        });
 
         // --- Client Management ---
 
@@ -835,17 +889,19 @@
         }
 
         function deleteClient(clientId) {
-            if (confirm('Are you sure you want to delete this client and all associated projects/proposals?')) {
-                clients = clients.filter(c => c.id !== clientId);
-                // Also delete associated projects and proposals
-                projects = projects.filter(p => p.clientId !== clientId);
-                proposals = proposals.filter(pr => pr.clientId !== clientId);
-                saveData();
-                renderClients();
-                renderProjects(); // Re-render projects as some might be deleted
-                renderProposals(); // Re-render proposals as some might be deleted
-                showMessage('Client deleted successfully!', 'error');
-            }
+            showConfirmModal('Are you sure you want to delete this client and all associated projects/proposals?', (confirmed) => {
+                if (confirmed) {
+                    clients = clients.filter(c => c.id !== clientId);
+                    // Also delete associated projects and proposals
+                    projects = projects.filter(p => p.clientId !== clientId);
+                    proposals = proposals.filter(pr => pr.clientId !== clientId);
+                    saveData();
+                    renderClients();
+                    renderProjects(); // Re-render projects as some might be deleted
+                    renderProposals(); // Re-render proposals as some might be deleted
+                    showMessage('Client deleted successfully!', 'error');
+                }
+            });
         }
 
         // --- Interaction Logging ---
@@ -913,15 +969,17 @@
         }
 
         function deleteInteraction(clientId, interactionId) {
-            if (confirm('Are you sure you want to delete this interaction?')) {
-                const client = clients.find(c => c.id === clientId);
-                if (client && client.interactions) {
-                    client.interactions = client.interactions.filter(i => i.id !== interactionId);
-                    saveData();
-                    renderInteractions(clientId);
-                    showMessage('Interaction deleted successfully!', 'error');
+            showConfirmModal('Are you sure you want to delete this interaction?', (confirmed) => {
+                if (confirmed) {
+                    const client = clients.find(c => c.id === clientId);
+                    if (client && client.interactions) {
+                        client.interactions = client.interactions.filter(i => i.id !== interactionId);
+                        saveData();
+                        renderInteractions(clientId);
+                        showMessage('Interaction deleted successfully!', 'error');
+                    }
                 }
-            }
+            });
         }
 
         // --- Project Management ---
@@ -1056,12 +1114,14 @@
         }
 
         function deleteProject(projectId) {
-            if (confirm('Are you sure you want to delete this project?')) {
-                projects = projects.filter(p => p.id !== projectId);
-                saveData();
-                renderProjects();
-                showMessage('Project deleted successfully!', 'error');
-            }
+            showConfirmModal('Are you sure you want to delete this project?', (confirmed) => {
+                if (confirmed) {
+                    projects = projects.filter(p => p.id !== projectId);
+                    saveData();
+                    renderProjects();
+                    showMessage('Project deleted successfully!', 'error');
+                }
+            });
         }
 
         // --- Proposal Tracking ---
@@ -1178,12 +1238,14 @@
         }
 
         function deleteProposal(proposalId) {
-            if (confirm('Are you sure you want to delete this proposal?')) {
-                proposals = proposals.filter(pr => pr.id !== proposalId);
-                saveData();
-                renderProposals();
-                showMessage('Proposal deleted successfully!', 'error');
-            }
+            showConfirmModal('Are you sure you want to delete this proposal?', (confirmed) => {
+                if (confirmed) {
+                    proposals = proposals.filter(pr => pr.id !== proposalId);
+                    saveData();
+                    renderProposals();
+                    showMessage('Proposal deleted successfully!', 'error');
+                }
+            });
         }
 
         // --- Template Management ---
@@ -1280,12 +1342,14 @@
                 showMessage('Pre-defined templates cannot be deleted.', 'error');
                 return;
             }
-            if (confirm('Are you sure you want to delete this template?')) {
-                templates = templates.filter(t => t.id !== templateId);
-                saveData();
-                renderTemplates();
-                showMessage('Template deleted successfully!', 'error');
-            }
+            showConfirmModal('Are you sure you want to delete this template?', (confirmed) => {
+                if (confirmed) {
+                    templates = templates.filter(t => t.id !== templateId);
+                    saveData();
+                    renderTemplates();
+                    showMessage('Template deleted successfully!', 'error');
+                }
+            });
         }
 
         // --- Utility Functions ---
@@ -1327,11 +1391,6 @@
             loadData();
             showSheet('clients'); // Default to clients tab on load
         });
-
-        // Simple confirmation dialog replacement
-        function confirm(message) {
-            return window.confirm(message); // Using native confirm for simplicity in this single-file app
-        }
     </script>
 </body>
 </html>
